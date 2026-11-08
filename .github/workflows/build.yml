@@ -10,6 +10,8 @@ jobs:
         git clone --recursive https://github.com/theos/theos.git $HOME/theos
         rm -rf $HOME/theos/sdks
         git clone https://github.com/theos/sdks.git $HOME/theos/sdks
+        curl -L https://github.com/ProcursusTeam/ldid/releases/latest/download/ldid_macosx_arm64 -o $HOME/theos/bin/ldid
+        chmod +x $HOME/theos/bin/ldid
         echo "THEOS=$HOME/theos" >> $GITHUB_ENV
     - name: Build
       run: |
