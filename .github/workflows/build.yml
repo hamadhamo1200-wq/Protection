@@ -2,21 +2,18 @@ name: Build Dylib
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Setup Theos & Toolchain
+    - name: Setup Theos
       run: |
-        sudo apt-get update
-        sudo apt-get install -y clang make git curl unzip
-        export THEOS=$HOME/theos
-        git clone --recursive https://github.com/theos/theos.git $THEOS
-        git clone https://github.com/theos/sdks.git $THEOS/sdks
-        git clone https://github.com/theos/toolchain.git $THEOS/toolchain
-        echo "THEOS=$THEOS" >> $GITHUB_ENV
+        git clone --recursive https://github.com/theos/theos.git $HOME/theos
+        rm -rf $HOME/theos/sdks
+        git clone https://github.com/theos/sdks.git $HOME/theos/sdks
+        echo "THEOS=$HOME/theos" >> $GITHUB_ENV
     - name: Build
       run: |
-        export PATH=$THEOS/bin:$PATH
+        export PATH=$HOME/theos/bin:$PATH
         make package FINALPACKAGE=1
     - name: Upload Dylib
       uses: actions/upload-artifact@v4
