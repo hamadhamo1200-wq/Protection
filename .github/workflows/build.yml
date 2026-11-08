@@ -2,20 +2,21 @@ name: Build Dylib
 on: [push]
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
-    - name: Setup Theos
+    - name: Setup Theos & SDKs
       run: |
         export THEOS=$HOME/theos
         git clone --recursive https://github.com/theos/theos.git $THEOS
+        git clone https://github.com/theos/sdks.git $THEOS/sdks
         echo "THEOS=$THEOS" >> $GITHUB_ENV
     - name: Build
       run: |
         export PATH=$THEOS/bin:$PATH
-        make package
+        make package FINALPACKAGE=1
     - name: Upload Dylib
       uses: actions/upload-artifact@v3
       with:
         name: Protection-Dylib
-        path: .theos/obj/debug/Protection.dylib
+        path: .theos/obj/Protection.dylib
