@@ -1,3 +1,5 @@
+#import <sys/types.h>
+#import <sys/ptrace.h>
 #import <Foundation/Foundation.h>
 #import <substrate.h>
 #import <mach-o/dyld.h>
